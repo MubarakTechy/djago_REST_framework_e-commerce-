@@ -20,3 +20,9 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+
+
+# http://127.0.0.1:8000/api/products/
+# http://127.0.0.1:8000/api/users/login/
