@@ -3,6 +3,8 @@ from rest_framework.response import Response
 from rest_framework.permissions import IsAuthenticated
 from rest_framework.generics import ListAPIView
 from rest_framework.generics import RetrieveAPIView
+import requests
+
 
 from cart.models import CartItem
 from .models import Order, OrderItem
@@ -69,3 +71,32 @@ class OrderDetailView(RetrieveAPIView):
         return Order.objects.filter(
             user=self.request.user
         )
+
+class InitializePaymentView(APIView):
+
+    permission_classes = [IsAuthenticated]
+
+    def post(self, request, pk):
+
+        order = Order.objects.get(
+            id=pk,
+            user=request.user
+        )
+
+        headers = {
+            "Authorization": f"Bearer {request.user.profile.sk_test_6f53a197c5935542de0098ab52c91c0b614f8e7b}",
+            "Content-Type": "application/json",
+        }
+
+        data = {
+            "email": request.user.email,
+            "amount": int(order.total_price * 100),
+        }
+
+        response = requests.post(
+            "https://api.paystack.co/transaction/initialize",
+            json=data,
+            headers=headers
+        )
+
+        return Response(response.json())
