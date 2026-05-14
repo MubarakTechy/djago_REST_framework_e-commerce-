@@ -26,3 +26,5 @@ if __name__ == '__main__':
 
 # http://127.0.0.1:8000/api/products/
 # http://127.0.0.1:8000/api/users/login/
+# POST /api/orders/checkout/
+# GET /api/orders/
